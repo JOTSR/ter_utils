@@ -6,7 +6,7 @@ export type DatasEntry = {
 	description?: string
 }
 
-export type ExperimentalDatas = {
+export type ExperimentalDatas<T = number> = {
 	conditions: Record<string, unknown>
 	measures: {
 		name: string
@@ -16,6 +16,6 @@ export type ExperimentalDatas = {
 			& Pick<DatasEntry, 'name'>
 			& Partial<Pick<DatasEntry, 'unit' | 'uncert' | 'description'>>
 		)[]
-		datas: (string | number)[][]
+		datas: T[][]
 	}[]
 }
