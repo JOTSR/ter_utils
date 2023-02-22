@@ -1,4 +1,5 @@
 import { fs, path } from '../deps.ts'
+import { ExperimentalDatas } from '../types.ts'
 
 export class Cassy {
 	/**
@@ -50,7 +51,7 @@ export class Cassy {
 				format,
 				datas,
 			}],
-		} satisfies Datas
+		} satisfies ExperimentalDatas
 	}
 
 	/**
@@ -60,7 +61,7 @@ export class Cassy {
 	 * @returns Datas.
 	 */
 	static async readDir(glob: string, { names }: { names: string[] }) {
-		const datas: Datas[] = []
+		const datas: ExperimentalDatas[] = []
 
 		for await (const file of fs.expandGlob(glob)) {
 			if (file.isFile) {
@@ -73,28 +74,6 @@ export class Cassy {
 		return {
 			...datas[0],
 			measures: datas.map(({ measures }) => measures).flat(),
-		} satisfies Datas
+		} satisfies ExperimentalDatas
 	}
-}
-
-export type Datas = {
-	conditions: Record<string, unknown>
-	measures: {
-		name: string
-		description: string
-		conditions: (Pick<DatasEntry, 'name' | 'value'> & DatasEntry)[]
-		format: (
-			& Pick<DatasEntry, 'name'>
-			& Partial<Pick<DatasEntry, 'unit' | 'uncert' | 'description'>>
-		)[]
-		datas: (string | number)[][]
-	}[]
-}
-
-export type DatasEntry = {
-	name?: string
-	unit?: string
-	value?: string | number
-	uncert?: string | number
-	description?: string
 }

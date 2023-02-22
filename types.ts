@@ -1,20 +1,21 @@
-type ExperimentalCondition = {
-	name: string
-	unit: string
-	value: number
+export type DatasEntry = {
+	name?: string
+	unit?: string
+	value?: string | number
+	uncert?: string | number
 	description?: string
 }
 
 export type ExperimentalDatas = {
-	conditions: ExperimentalCondition[]
+	conditions: Record<string, unknown>
 	measures: {
 		name: string
 		description: string
-		conditions: ExperimentalCondition[]
-		format: {
-			name: string
-			unit: string
-		}[]
-		datas: number[][]
+		conditions: (Pick<DatasEntry, 'name' | 'value'> & DatasEntry)[]
+		format: (
+			& Pick<DatasEntry, 'name'>
+			& Partial<Pick<DatasEntry, 'unit' | 'uncert' | 'description'>>
+		)[]
+		datas: (string | number)[][]
 	}[]
 }

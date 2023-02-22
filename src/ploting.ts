@@ -36,7 +36,7 @@ export function plotClassic(
 	const data: Plotly.Data[] = measures.map(
 		({ datas, name, description }, index) => {
 			//transform data to plotly format
-			const [x, y] = transpose2D(datas)
+			const [x, y] = transpose2D(datas as [number, number][])
 
 			const fit = PolyFit.read(
 				datas.map(([x, y]) => ({ x, y })),
