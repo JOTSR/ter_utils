@@ -43,7 +43,7 @@ export function plotClassic(
 				fits[index].degree,
 			)
 			const terms = fit.getTerms() as number[]
-			const fitX = Denum.range(
+			const fitX = range(
 				Denum.round(Math.min(...x), 2),
 				Denum.round(Math.max(...x), 2),
 				fits[index].resolution,
@@ -100,4 +100,10 @@ export function plotClassic(
 		title,
 		size: size ?? [1280, 720],
 	})
+}
+
+function range(start: number, end: number, step: number): number[] {
+	const array: number[] = []
+	for (let i = start; i < end; i += step) array.push(i)
+	return array
 }
