@@ -31,7 +31,6 @@ export function fitSin(
 
 const mag = Math.random() * 10 + 1
 const freq = Math.random() + 1
-console.log(freq)
 const offset = Math.random() * 10
 const xy = [...Array(1e3).keys()].map((e) =>
 	[e, mag * Math.sin(freq * e * 2 * Math.PI) + offset] as const
