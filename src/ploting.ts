@@ -57,8 +57,8 @@ export function plotClassic(
 				)
 				const terms = fit.getTerms() as number[]
 				const fitX = range(
-					Denum.round(Math.min(...x), 2),
-					Denum.round(Math.max(...x), 2),
+					Math.min(...x),
+					Math.max(...x),
 					fits[index].resolution,
 				)
 				const fitY = fitX.map((x) => fit.predictY(terms, x)) as number[]
