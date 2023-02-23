@@ -15,7 +15,7 @@ export function transpose2D(array: number[][]): [number[], number[]] {
 }
 
 export type PlotClassicOptions = {
-	fits: {
+	fits?: {
 		degree: number
 		resolution: number
 	}[]
@@ -38,19 +38,7 @@ export function plotClassic(
 			//transform data to plotly format
 			const [x, y] = transpose2D(datas as [number, number][])
 
-			const fit = PolyFit.read(
-				datas.map(([x, y]) => ({ x, y })),
-				fits[index].degree,
-			)
-			const terms = fit.getTerms() as number[]
-			const fitX = range(
-				Denum.round(Math.min(...x), 2),
-				Denum.round(Math.max(...x), 2),
-				fits[index].resolution,
-			)
-			const fitY = fitX.map((x) => fit.predictY(terms, x)) as number[]
-
-			return [{
+			const scatter = {
 				//plot experimental datas
 				x,
 				y,
@@ -60,19 +48,37 @@ export function plotClassic(
 				xaxis: `x${index + 1}`,
 				yaxis: `y${index + 1}`,
 				title: { text: description },
-			}, {
-				//Draw fit alongside to experimental data
-				x: fitX,
-				y: fitY,
-				mode: 'lines',
-				name: terms.map((coef, index) =>
-					index === 0
-						? `${Denum.round(coef, 2)}`
-						: `${Denum.round(coef, 2)} * x^${index}`
-				).toReversed().join(' + '),
-				xaxis: `x${index + 1}`,
-				yaxis: `y${index + 1}`,
-			}] as Plotly.Data[]
+			}
+
+			if (fits !== undefined) {
+				const fit = PolyFit.read(
+					datas.map(([x, y]) => ({ x, y })),
+					fits[index].degree,
+				)
+				const terms = fit.getTerms() as number[]
+				const fitX = range(
+					Denum.round(Math.min(...x), 2),
+					Denum.round(Math.max(...x), 2),
+					fits[index].resolution,
+				)
+				const fitY = fitX.map((x) => fit.predictY(terms, x)) as number[]
+
+				return [scatter, {
+					//Draw fit alongside to experimental data
+					x: fitX,
+					y: fitY,
+					mode: 'lines',
+					name: terms.map((coef, index) =>
+						index === 0
+							? `${Denum.round(coef, 2)}`
+							: `${Denum.round(coef, 2)} * x^${index}`
+					).toReversed().join(' + '),
+					xaxis: `x${index + 1}`,
+					yaxis: `y${index + 1}`,
+				}] as Plotly.Data[]
+			}
+
+			return [scatter] as Plotly.Data[]
 		},
 	).flat()
 
