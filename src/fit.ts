@@ -24,7 +24,7 @@ export function fitSin(
 	for (let i = 1; i < e.length; i++) {
 		f.push(e[i] - e[i - 1])
 	}
-	const freq = 2 * Denum.mean(...f) / Math.PI
+	const freq = Denum.mean(...f)
 
 	return { mag, freq, offset }
 }
@@ -34,7 +34,7 @@ const freq = Math.random() + 1
 console.log(freq)
 const offset = Math.random() * 10
 const xy = [...Array(1e3).keys()].map((e) =>
-	[e, mag * Math.sin(freq * e) + offset] as const
+	[e, mag * Math.sin(freq * e * 2 * Math.PI) + offset] as const
 )
 
 Deno.test({

@@ -89,6 +89,11 @@ export function plotClassic(
 			columns: Math.ceil(Math.sqrt(measures.length)),
 			pattern: 'independent',
 		},
+		legend: {
+			x: 1,
+			xanchor: 'right',
+			y: 1,
+		},
 		...layout,
 	}
 	measures.forEach(({ format }, index) => {
