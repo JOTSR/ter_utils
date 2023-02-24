@@ -46,9 +46,25 @@ export function plotClassic(
 					if (params?.coefs !== undefined) {
 						return (params.coefs as number[]).map((coef, index) =>
 							index === 0
-								? `${Denum.round(coef, 2)}`
-								: `${Denum.round(coef, 2)} * x^${index}`
+								? `${coef.toExponential(2)}`
+								: `${coef.toExponential(2)} * x^${index}`
 						).toReversed().join(' + ')
+					}
+					if (params?.pulsation !== undefined) {
+						const { magnitude, pulsation, phase, carrier } = params as {
+							magnitude: number
+							pulsation: number
+							phase: number
+							carrier: FitResult<{ coefs: number[] }>
+						}
+
+						const carrierStr = (carrier.params.coefs as number[]).map((coef, index) =>
+							index === 0
+								? `${coef.toExponential(2)}`
+								: `${coef.toExponential(2)} * x^${index}`
+						).toReversed().join(' + ')
+
+						return `${magnitude.toExponential(2)} * sin(${pulsation.toExponential(2)} * x + ${phase.toExponential(2)}) + ${carrierStr}`
 					}
 					return `fit_${index}`
 				})()
