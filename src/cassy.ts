@@ -1,5 +1,5 @@
-import { fs, path } from '@/deps.ts'
-import { ExperimentalDatas } from '@/types.ts'
+import { fs, path } from '../deps.ts'
+import { ExperimentalDatas } from '../types.ts'
 
 export class Cassy {
 	/**

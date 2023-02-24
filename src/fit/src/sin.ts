@@ -1,7 +1,7 @@
-import { assertAlmostEquals, Denum } from '@/deps.ts'
-import { ExperimentalDatas, FitOptions, FitResult } from '@/types.ts'
-import { range, zip } from '@/utils.ts'
-import { poly } from '@/src/fit/src/poly.ts'
+import { assertAlmostEquals, Denum } from '../../../deps.ts'
+import { ExperimentalDatas, FitOptions, FitResult } from '../../../types.ts'
+import { range, zip } from '../../../utils.ts'
+import { poly } from './poly.ts'
 
 /**
  * Fit a 2D datas array to a sinus approximation.

@@ -1,6 +1,6 @@
-import { assertAlmostEquals, Denum, PolyFit } from '@/deps.ts'
-import { ExperimentalDatas, FitOptions, FitResult } from '@/types.ts'
-import { range, transpose2D, zip } from '@/utils.ts'
+import { assertAlmostEquals, Denum, PolyFit } from '../../../deps.ts'
+import { ExperimentalDatas, FitOptions, FitResult } from '../../../types.ts'
+import { range, transpose2D, zip } from '../../../utils.ts'
 
 /**
  * Fit a 2D datas array to a polynomial approximation.

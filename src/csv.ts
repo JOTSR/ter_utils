@@ -1,5 +1,5 @@
-import { path } from '@/deps.ts'
-import { ExperimentalDatas } from '@/types.ts'
+import { path } from '../deps.ts'
+import { ExperimentalDatas } from '../types.ts'
 
 export class CSV {
 	static write(

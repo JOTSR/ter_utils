@@ -1,6 +1,6 @@
-import { Denum, Deplot } from '@/deps.ts'
-import { ExperimentalDatas, FitResult } from '@/types.ts'
-import { transpose2D } from '@/utils.ts'
+import { Denum, Deplot } from '../deps.ts'
+import { ExperimentalDatas, FitResult } from '../types.ts'
+import { transpose2D } from '../utils.ts'
 
 export const deplot = new Deplot('Plotly')
 
