@@ -1,10 +1,12 @@
-import { Denum, Deplot } from "@/deps.ts"
-import { ExperimentalDatas, FitResult } from "@/types.ts"
-import { transpose2D } from "@/utils.ts"
+import { Denum, Deplot } from '@/deps.ts'
+import { ExperimentalDatas, FitResult } from '@/types.ts'
+import { transpose2D } from '@/utils.ts'
 
 export const deplot = new Deplot('Plotly')
 
-export type PlotClassicOptions<T extends Record<string, unknown> = Record<string, unknown>> = {
+export type PlotClassicOptions<
+	T extends Record<string, unknown> = Record<string, unknown>,
+> = {
 	fits?: FitResult<T>[]
 	layout?: Partial<Plotly.Layout>
 	title: string
@@ -46,7 +48,7 @@ export function plotClassic(
 							index === 0
 								? `${Denum.round(coef, 2)}`
 								: `${Denum.round(coef, 2)} * x^${index}`
-							).toReversed().join(' + ')
+						).toReversed().join(' + ')
 					}
 					return `fit_${index}`
 				})()

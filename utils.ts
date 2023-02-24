@@ -27,7 +27,9 @@ export function transpose2D(array: number[][]): [number[], number[]] {
  * @param {T[][]} arrays - T[][]
  * @returns Zipped array.
  */
-export function zip<T extends unknown[], U extends unknown[] = Array<keyof T>>(...arrays: U[]): T[] {
+export function zip<T extends unknown[], U extends unknown[] = Array<keyof T>>(
+	...arrays: U[]
+): T[] {
 	const zipped: T[] = []
 	for (let index = 0; index < arrays[0].length; index++) {
 		zipped.push(arrays.map((array) => array[index]).flat() as T)

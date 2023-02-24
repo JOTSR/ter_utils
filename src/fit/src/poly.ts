@@ -1,9 +1,9 @@
-import { Denum, PolyFit, assertAlmostEquals } from "@/deps.ts"
-import { ExperimentalDatas, FitOptions, FitResult } from "@/types.ts"
-import { range, transpose2D, zip } from "@/utils.ts"
+import { assertAlmostEquals, Denum, PolyFit } from '@/deps.ts'
+import { ExperimentalDatas, FitOptions, FitResult } from '@/types.ts'
+import { range, transpose2D, zip } from '@/utils.ts'
 
 /**
- * Fit a 2D data array to a polynomial approximation.
+ * Fit a 2D datas array to a polynomial approximation.
  * @param  - `datas`: the data points to fit
  * @param {FitOptions}  - `datas`: the data points to fit
  * @returns Fit points and fit params.
@@ -32,17 +32,29 @@ export function poly(
 }
 
 Deno.test({
-    name: 'fit plynomial',
-    fn: () => {
-        const coefs = Denum.randomArray(0, 5, Denum.randomInt(1, 5)).map(coef => Denum.round(coef, 4))
-        
-        const x = [...Array(Denum.randomInt(2, 100)).keys()]
-        const y = x.map(i => coefs.reduce((acc, coef, power) => acc + coef * i ** power, 0))
-        const datas = zip<[number, number]>(x, y)
+	name: 'fit polynomial',
+	fn: () => {
+		const coefs = Denum.randomArray(0, 5, Denum.randomInt(1, 5)).map((coef) =>
+			Denum.round(coef, 4)
+		)
 
-        const fit = poly({ datas }, { resolution: 1, degree: coefs.length - 1 })
-        
-        coefs.map((_, index) => assertAlmostEquals(coefs[index], fit.params.coefs[index], coefs[index] * 0.01))
-        datas.flat().map((point, index) => assertAlmostEquals(point, fit.points.flat()[index], point * 0.01))
-    }
+		const x = [...Array(Denum.randomInt(2, 100)).keys()]
+		const y = x.map((i) =>
+			coefs.reduce((acc, coef, power) => acc + coef * i ** power, 0)
+		)
+		const datas = zip<[number, number]>(x, y)
+
+		const fit = poly({ datas }, { resolution: 1, degree: coefs.length - 1 })
+
+		coefs.map((_, index) =>
+			assertAlmostEquals(
+				coefs[index],
+				fit.params.coefs[index],
+				coefs[index] * 0.01,
+			)
+		)
+		datas.flat().map((point, index) =>
+			assertAlmostEquals(point, fit.points.flat()[index], point * 0.01)
+		)
+	},
 })
