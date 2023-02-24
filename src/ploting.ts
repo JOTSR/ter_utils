@@ -39,7 +39,7 @@ export function plotClassic(
 				title: { text: description },
 			}
 
-			if (fits !== undefined) {
+			if (fits?.at(index) !== undefined) {
 				const { points, params } = fits[index]
 				const [x, y] = transpose2D(points)
 				const name = (() => {
