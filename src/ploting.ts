@@ -7,7 +7,7 @@ export const deplot = new Deplot('Plotly')
 export type PlotClassicOptions<
 	T extends Record<string, unknown> = Record<string, unknown>,
 > = {
-	fits?: FitResult<T>[]
+	fits?: (FitResult<T> | undefined)[]
 	layout?: Partial<Plotly.Layout>
 	title: string
 	size?: [number, number]
@@ -40,7 +40,7 @@ export function plotClassic(
 			}
 
 			if (fits?.at(index) !== undefined) {
-				const { points, params } = fits[index]
+				const { points, params } = fits[index]!
 				const [x, y] = transpose2D(points)
 				const name = (() => {
 					if (params?.coefs !== undefined) {
