@@ -4,22 +4,8 @@ import { transpose2D } from "@/utils.ts"
 
 export const deplot = new Deplot('Plotly')
 
-/**
- * It takes an array of arrays of numbers, and returns an array of arrays of numbers
- * @param {number[][]} array - The array to transpose.
- * @returns [number[], number[]]
- */
-export function transpose2D(array: number[][]): [number[], number[]] {
-	const x = array.map((e) => e[0]).flat()
-	const y = array.map((e) => e[1]).flat()
-	return [x, y]
-}
-
-export type PlotClassicOptions = {
-	fits?: {
-		degree: number
-		resolution: number
-	}[]
+export type PlotClassicOptions<T extends Record<string, unknown> = Record<string, unknown>> = {
+	fits?: FitResult<T>[]
 	layout?: Partial<Plotly.Layout>
 	title: string
 	size?: [number, number]
@@ -52,28 +38,25 @@ export function plotClassic(
 			}
 
 			if (fits !== undefined) {
-				const fit = PolyFit.read(
-					datas.map(([x, y]) => ({ x, y })),
-					fits[index].degree,
-				)
-				const terms = fit.getTerms() as number[]
-				const fitX = range(
-					Math.min(...x),
-					Math.max(...x),
-					fits[index].resolution,
-				)
-				const fitY = fitX.map((x) => fit.predictY(terms, x)) as number[]
+				const { points, params } = fits[index]
+				const [x, y] = transpose2D(points)
+				const name = (() => {
+					if (params?.coefs !== undefined) {
+						return (params.coefs as number[]).map((coef, index) =>
+							index === 0
+								? `${Denum.round(coef, 2)}`
+								: `${Denum.round(coef, 2)} * x^${index}`
+							).toReversed().join(' + ')
+					}
+					return `fit_${index}`
+				})()
 
 				return [scatter, {
 					//Draw fit alongside to experimental data
-					x: fitX,
-					y: fitY,
+					x,
+					y,
 					mode: 'lines',
-					name: terms.map((coef, index) =>
-						index === 0
-							? `${Denum.round(coef, 2)}`
-							: `${Denum.round(coef, 2)} * x^${index}`
-					).toReversed().join(' + '),
+					name,
 					xaxis: `x${index + 1}`,
 					yaxis: `y${index + 1}`,
 				}] as Plotly.Data[]
@@ -112,10 +95,4 @@ export function plotClassic(
 		title,
 		size: size ?? [1280, 720],
 	})
-}
-
-function range(start: number, end: number, step: number): number[] {
-	const array: number[] = []
-	for (let i = start; i < end; i += step) array.push(i)
-	return array
 }

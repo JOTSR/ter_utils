@@ -6,3 +6,4 @@ const PolyFit = _PolyFit.default
 export { PolyFit }
 export * as path from 'https://deno.land/std@0.177.0/path/mod.ts'
 export * as fs from 'https://deno.land/std@0.177.0/fs/mod.ts'
+export { assertEquals, assertAlmostEquals } from 'https://deno.land/std@0.177.0/testing/asserts.ts'

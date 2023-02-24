@@ -19,3 +19,14 @@ export type ExperimentalDatas<T = number> = {
 		datas: T[][]
 	}[]
 }
+
+export type FitOptions = {
+	resolution: number
+	degree: number
+}
+
+export type FitResult<T extends Record<string, unknown>, U = [number, number]> =
+	{
+		points: U[]
+		params: T
+	}
