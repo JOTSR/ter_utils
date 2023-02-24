@@ -59,7 +59,7 @@ export function sin(
 
 	const x = range(datas[0][0], datas[0][1], resolution)
 	const y = x.map((i) =>
-		magnitude * Math.sin(pulsation * i + phase) + carrier.points[i][1]
+		magnitude * Math.sin(pulsation * i + phase) + carrier.points[i]?.[1] ?? 0
 	)
 
 	return {
