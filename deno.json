@@ -5,5 +5,8 @@
 			"singleQuote": true,
 			"useTabs": true
 		}
+	},
+	"imports": {
+		"@/": "./"
 	}
 }
