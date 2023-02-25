@@ -1,4 +1,4 @@
 import { poly } from './src/poly.ts'
-import { sin } from './src/sin.ts'
+import { sine } from './src/sin.ts'
 
-export const fit = { poly, sin }
+export const fit = { poly, sine }
