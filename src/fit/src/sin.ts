@@ -20,6 +20,8 @@ export function sin(
 		carrier: FitResult<{ coefs: number[] }>
 	}
 > {
+	datas = datas.sort(([a], [b]) => a - b)
+
 	const extremums: [number, number][] = []
 	for (let index = 1; index < datas.length - 1; index++) {
 		if (
@@ -63,15 +65,31 @@ export function sin(
 			0,
 		)
 
-	const x = range(datas[0][0], datas[0][1], resolution)
-	const y = x.map((_, i) =>
-		magnitude * Math.sin(pulsation * x[i] + phase) + computeCarrier(i)
-	)
+	const [xRaw] = transpose2D(datas)
+	const x = range(Math.min(...xRaw), Math.max(...xRaw), resolution)
 
-	return {
-		points: zip(x, y),
-		params: { magnitude, pulsation, phase, carrier },
+	let tries = 0
+	while (tries < 200) {
+		tries++
+		const y = x.map((_, i) =>
+			magnitude * Math.sin(pulsation * x[i] + phase) + computeCarrier(i)
+		)
+
+		const points = zip<[number, number]>(x, y)
+
+		const fitFirstExtremum = points.find(([x]) =>
+			Math.abs(x - extremums[0][0]) <= resolution
+		)!
+		if (Math.abs(extremums[0][1] - fitFirstExtremum[1]) <= 5 * resolution) {
+			return {
+				points,
+				params: { magnitude, pulsation, phase, carrier },
+			}
+		}
+		phase += resolution
 	}
+
+	throw new Error(`unable to fit datas, last result: ${JSON.stringify({ magnitude, pulsation, phase, carrier: carrier.params.coefs })}`)
 }
 
 Deno.test({
