@@ -1,6 +1,6 @@
 import { assertAlmostEquals, Denum } from '../../../deps.ts'
 import { ExperimentalDatas, FitOptions, FitResult } from '../../../types.ts'
-import { range, zip } from '../../../utils.ts'
+import { range, transpose2D, zip } from '../../../utils.ts'
 import { poly } from './poly.ts'
 
 /**
@@ -49,21 +49,23 @@ export function sin(
 	}
 
 	const falling = extremums[0][1] > extremums[1][1]
-	const phase = falling
-		? Denum.mean(...phases) + Math.PI
-		: Denum.mean(...phases)
+	let phase = falling ? Denum.mean(...phases) : Denum.mean(...phases) - Math.PI
 
 	const carrier = poly({
 		datas: extremums.filter((_, index) => index % 2 === 0).map((
 			[x, y],
-		) => [x, falling ? y - magnitude : y + magnitude]),
+		) => [x, y - magnitude]),
 	}, { resolution, degree })
 
 	const computeCarrier = (x: number) =>
-		carrier.params.coefs.reduce(
-			(acc, coef, power) => acc + coef * x ** power,
-			0,
-		)
+		carrier.params.coefs
+			.map((coef, index, array) =>
+				(array.length % 2 === 0) && (index === 0) ? -coef : coef
+			)
+			.reduce(
+				(acc, coef, power) => acc + coef * x ** power,
+				0,
+			)
 
 	const [xRaw] = transpose2D(datas)
 	const x = range(Math.min(...xRaw), Math.max(...xRaw), resolution)
