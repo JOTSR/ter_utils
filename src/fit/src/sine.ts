@@ -91,7 +91,16 @@ export function sine(
 		phase += resolution
 	}
 
-	throw new Error(`unable to fit datas, last result: ${JSON.stringify({ magnitude, pulsation, phase, carrier: carrier.params.coefs })}`)
+	throw new Error(
+		`unable to fit datas, last result: ${
+			JSON.stringify({
+				magnitude,
+				pulsation,
+				phase,
+				carrier: carrier.params.coefs,
+			})
+		}`,
+	)
 }
 
 Deno.test({
@@ -113,7 +122,7 @@ Deno.test({
 		)
 		const datas = zip<[number, number]>(x, y)
 
-		const fit = sin({ datas }, {
+		const fit = sine({ datas }, {
 			resolution: 1,
 			degree: carrierCoefs.length - 1,
 		})
