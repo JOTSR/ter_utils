@@ -1,4 +1,4 @@
-import { Denum, Deplot } from '../deps.ts'
+import { Deplot } from '../deps.ts'
 import { ExperimentalDatas, FitResult } from '../types.ts'
 import { transpose2D } from '../utils.ts'
 
@@ -58,13 +58,18 @@ export function plotClassic(
 							carrier: FitResult<{ coefs: number[] }>
 						}
 
-						const carrierStr = (carrier.params.coefs as number[]).map((coef, index) =>
+						const carrierStr = (carrier.params.coefs as number[]).map((
+							coef,
+							index,
+						) =>
 							index === 0
 								? `${coef.toExponential(2)}`
 								: `${coef.toExponential(2)} * x^${index}`
 						).toReversed().join(' + ')
 
-						return `${magnitude.toExponential(2)} * sin(${pulsation.toExponential(2)} * x + ${phase.toExponential(2)}) + ${carrierStr}`
+						return `${magnitude.toExponential(2)} * sin(${
+							pulsation.toExponential(2)
+						} * x + ${phase.toExponential(2)}) + ${carrierStr}`
 					}
 					return `fit_${index}`
 				})()

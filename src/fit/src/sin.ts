@@ -57,9 +57,15 @@ export function sin(
 		) => [x, falling ? y - magnitude : y + magnitude]),
 	}, { resolution, degree })
 
+	const computeCarrier = (x: number) =>
+		carrier.params.coefs.reduce(
+			(acc, coef, power) => acc + coef * x ** power,
+			0,
+		)
+
 	const x = range(datas[0][0], datas[0][1], resolution)
-	const y = x.map((i) =>
-		magnitude * Math.sin(pulsation * i + phase) + carrier.points[i]?.[1] ?? 0
+	const y = x.map((_, i) =>
+		magnitude * Math.sin(pulsation * x[i] + phase) + computeCarrier(i)
 	)
 
 	return {
