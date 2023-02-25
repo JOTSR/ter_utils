@@ -9,7 +9,7 @@ import { poly } from './poly.ts'
  * @param {FitOptions}  - `datas`: the data points to fit
  * @returns Fit points and fit params (up to 15% error).
  */
-export function sin(
+export function sine(
 	{ datas }: Pick<ExperimentalDatas['measures'][0], 'datas'>,
 	{ resolution, degree }: FitOptions = { resolution: 0.01, degree: 1 },
 ): FitResult<
