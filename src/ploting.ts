@@ -11,6 +11,7 @@ export type PlotClassicOptions<
 	layout?: Partial<Plotly.Layout>
 	title: string
 	size?: [number, number]
+	traceOptions?: Partial<Omit<Plotly.Data, 'x' | 'y'>>[]
 }
 
 /**
@@ -20,7 +21,7 @@ export type PlotClassicOptions<
  */
 export function plotClassic(
 	measures: ExperimentalDatas['measures'],
-	{ fits, layout, title, size }: PlotClassicOptions,
+	{ fits, layout, title, size, traceOptions }: PlotClassicOptions,
 ) {
 	const data: Plotly.Data[] = measures.map(
 		({ datas, name, description }, index) => {
@@ -37,6 +38,7 @@ export function plotClassic(
 				xaxis: layout?.grid?.pattern === 'coupled' ? 'x1' : `x${index + 1}`,
 				yaxis: layout?.grid?.pattern === 'coupled' ? 'y1' : `y${index + 1}`,
 				title: { text: description },
+				...traceOptions?.[index],
 			}
 
 			if (fits?.at(index) !== undefined) {
@@ -80,8 +82,9 @@ export function plotClassic(
 					y,
 					mode: 'lines',
 					name,
-					xaxis: `x${index + 1}`,
-					yaxis: `y${index + 1}`,
+					xaxis: layout?.grid?.pattern === 'coupled' ? 'x1' : `x${index + 1}`,
+					yaxis: layout?.grid?.pattern === 'coupled' ? 'y1' : `y${index + 1}`,
+					...traceOptions?.[index],
 				}] as Plotly.Data[]
 			}
 
