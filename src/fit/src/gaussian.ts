@@ -11,7 +11,7 @@ import { range, transpose2D, zip } from '../../../utils.ts'
 export function gaussian(
 	{ datas }: Pick<ExperimentalDatas['measures'][0], 'datas'>,
 	{ resolution }: Pick<FitOptions, 'resolution'> = { resolution: 0.01 },
-): FitResult<{ coefs: { μ: number; σ: number } }> {
+): FitResult<{ μ: number; σ: number }> {
 	const [x] = transpose2D(datas as [number, number][])
 	const μ = Denum.mean(...x)
 	const σ = Denum.mean(...x.map((value) => value ** 2)) - Denum.mean(...x) ** 2
@@ -25,7 +25,7 @@ export function gaussian(
 
 	const points = zip<[number, number]>(fitX, fitY)
 
-	return { points, params: { coefs: { μ, σ } } }
+	return { points, params: { μ, σ } }
 }
 
 function gaussFn(x: number, μ: number, σ: number): number {
