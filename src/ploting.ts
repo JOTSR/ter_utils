@@ -45,6 +45,9 @@ export function plotClassic(
 				const { points, params } = fits[index]!
 				const [x, y] = transpose2D(points)
 				const name = (() => {
+					if (params?.μ !== undefined && params?.σ !== undefined) {
+						return `gauss(μ: ${params.μ}, σ: ${params.σ})`
+					}
 					if (params?.coefs !== undefined) {
 						return (params.coefs as number[]).map((coef, index) =>
 							index === 0
