@@ -14,7 +14,9 @@ export function gaussian(
 ): FitResult<{ μ: number; σ: number }> {
 	const [x] = transpose2D(datas as [number, number][])
 	const μ = Denum.mean(...x)
-	const σ = Denum.mean(...x.map((value) => value ** 2)) - Denum.mean(...x) ** 2
+	const σ = Math.sqrt(
+		Denum.mean(...x.map((value) => value ** 2)) - Denum.mean(...x) ** 2,
+	) / 2
 
 	const fitX = range(
 		Math.min(...x),
