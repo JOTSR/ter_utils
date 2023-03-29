@@ -34,8 +34,8 @@ export function plotClassic(
 				mode: 'markers',
 				type: 'scatter',
 				name,
-				xaxis: `x${index + 1}`,
-				yaxis: `y${index + 1}`,
+				xaxis: layout?.grid?.pattern === 'coupled' ? 'x1' : `x${index + 1}`,
+				yaxis: layout?.grid?.pattern === 'coupled' ? 'y1' : `y${index + 1}`,
 				title: { text: description },
 			}
 
